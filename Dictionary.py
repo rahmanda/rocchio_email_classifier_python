@@ -2,22 +2,18 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import json
-import DBConnect
+import DB
 
 class Dictionary:
 
 	_table = 'dictionary'
-	_con = null
-
-	def __init__(self):
-		self._con = DBConnect()
 
 	# insert a term into dictionary table group by document id
 	def add_dictionary(self, term):
-		self._con.connect()
+		con = DB.connect()
 
 		table = self._table
-		cur = self._con.cursor()
+		cur = con.cursor()
 
 		cur.execute("SELECT * FROM %s WHERE term = %s" % table, term)
 
@@ -26,16 +22,16 @@ class Dictionary:
 		else :
 			cur.execute("INSERT INTO %s VALUES (%s, 1)" % table, term)
 
-		self._con.close()
+		con.close(con)
 
 	# get dictionary table and transform into array key structure
 	# for easier access to df value
 	# return dicts array
 	def fetch_all(self):
 		df = {}
-		self._con.connect()
+		con = DB.connect()
 		table = self._table
-		cur = self._con.cursor()
+		cur = con.cursor()
 
 		cur.execute("SELECT * FROM %s" % table)
 		rows = cur.fetchall()
@@ -43,6 +39,6 @@ class Dictionary:
 		for row in rows:
 			df[row['term']] = row['df'];
 
-		self._con.close()
+		con.close(con)
 
 		return df

@@ -2,22 +2,17 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import json
-import DBConnect
+import DB
 import math
 
 class TermWeight:
 
 	_table = 'TermWeight'
-	_con = null
-
-	def __init__(self):
-		self._con = DBConnect()
 
 	# insert tfidf calculation of a term in a document into term weight table
 	# return terms weight array
 	def add_terms_weight(self):
-		terms_weight = {}
-		con = self._con
+		con = DB.connect()
 		table = self._table
 		cur = con.cursor()
 
