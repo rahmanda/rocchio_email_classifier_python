@@ -5,6 +5,7 @@ con = DB.connect()
 
 if con :
 	cur = con.cursor()
+	DB.get_class('class')
 
 	cur.execute("SELECT * FROM users WHERE account = 'jarvis@mail.com'")
 

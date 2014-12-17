@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
-import json
 
 class DB:
 	# configuration to connect database
@@ -9,7 +8,7 @@ class DB:
 	__user = 'root'
 	__password = 'ambercat'
 	__db = 'imail'
-
+	classs = 'class'
 	# connect to database
 	# return connection
 	@classmethod
@@ -38,3 +37,7 @@ class DB:
 		self.__user = 'root'
 		self.__password = 'ambercat'
 		self.__db = 'imail'
+
+	@classmethod
+	def get_class(self, classs):
+		print classs
