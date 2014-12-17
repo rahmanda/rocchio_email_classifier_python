@@ -2,40 +2,44 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import json
-import DB
+from DB import DB
 
 
 class Tokens:
 
-	_email_id = 0
 	_table = 'tokens'
-	_email = null
+	# list of constants that represents fields on the table
+	email_id = 0
+	term = 1
+	tf = 2
+	class = 3
 
 	# tokenize an email
-	def tokenize(self, doc_id):
-		email = self._email
-		tokens = email.splitlines();
+	@classmethod
+	def tokenize(self, email, class):
+		tokens = email.splitlines()
 
 		for token in tokens:
-			self._add_token(token)
+			self.add_token(token, class)
 
 	# insert a token in a document into token table
-	def _add_token(self, token):
+	@classmethod
+	def add_token(self, token, class):
 		con = DB.connect()
 		table = self._table
-		email_id = self._email_id
 		cur = con.cursor()
 
-		cur.execute("SELECT * FROM %s WHERE term = %s AND email_id = %d" % table, token, email_id)
+		cur.execute("SELECT * FROM %s WHERE term = %s AND class = %s" % table, token, class)
 		term = cur.fetchone()
 
 		if cur.rowcount > 0 :
-			cur.execute("UPDATE %s SET tf = tf + 1 WHERE term = %s AND email_id = %d" % table, token, email_id)
+			cur.execute("UPDATE %s SET tf = tf + 1 WHERE term = %s AND email_id = %ld" % table, token, term[email_id])
 		else :
-			cur.execute("INSERT INTO %s VALUES (%d, %s, %s, 1)" % table, email_id, token, term['class'])
+			cur.execute("INSERT INTO %s VALUES (%d, %s, 1)" % table, token, term[class])
 
 		DB.close(con)
 
+	@classmethod
 	def fetch_all(self):
 		tokens = {}
 		con = DB.connect()
@@ -46,7 +50,7 @@ class Tokens:
 		rows = cur.fetchall()
 
 		for row in rows:
-			tokens[row['email_id']][row['token']] = row['tf']
+			tokens[row[email_id]][row[token]] = row[tf]
 
 		DB.close(con)
 

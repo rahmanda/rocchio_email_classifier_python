@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import json
-import DB
+from DB import DB
 
 class Dictionary:
 

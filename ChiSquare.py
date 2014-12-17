@@ -2,17 +2,16 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import json
-import DB
 import math
 import Tokens
+from DB import DB
 
 class ChiSquare:
 	
 	_con = null
 	_table = 'chisquare'
 
-	@classmethod
-	def calculate_chi_square(self, term, class):
+	def _calculate_chi_square(self, term, class):
 		N = Tokens.get_count_email()
 		a = Tokens.get_count_term_on_class(term, class)
 		b = Tokens.get_count_term_not_on_class(term, class)
@@ -27,6 +26,7 @@ class ChiSquare:
 		return chi_square
 
 	@classmethod
-	def add_chi_square(self, chi_square)
+	def add_chi_square(self, chi_square):
+		con = DB.connect()
 		
 	

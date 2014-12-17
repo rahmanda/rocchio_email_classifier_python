@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 import MySQLdb as mdb
 import json
-import DB
 import math
+from DB import DB
 
 class TermWeight:
 
@@ -11,6 +11,7 @@ class TermWeight:
 
 	# insert tfidf calculation of a term in a document into term weight table
 	# return terms weight array
+	@classmethod
 	def add_terms_weight(self):
 		con = DB.connect()
 		table = self._table
@@ -25,10 +26,10 @@ class TermWeight:
 		tokens = cur.fetchall()
 
 		for token in tokens:
-			tfidf = self._calc_tfidf(email_count, token['tf'], dicts[token['term']])
+			tfidf = self.calc_tfidf(email_count, token['tf'], dicts[token['term']])
 			cur.execute("INSERT INTO %s VALUES (%d, %s, %d)" % table, token['email_id'], token['term'], tfidf)
 
-	def _calc_tfidf(email_count, tf, df):
+	def calc_tfidf(self, email_count, tf, df):
 		return tf * math.log(email_count / df)
 
 	def fetch_all(self):

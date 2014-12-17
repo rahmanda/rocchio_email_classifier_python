@@ -15,10 +15,10 @@ class DB:
 	@classmethod
 	def connect(self):
 		try:
-			con = mdb.connect(self.__server, self.__user, __password, __db)
+			con = mdb.connect(self.__server, self.__user, self.__password, self.__db)
 			return con
-		except: _mysql.Error, e:
-			print "Error %d: %s" % (e.args[0], e.args[1])
+		except:
+			print("Error connecting to database, check the server configuration\n")
 
 	# close connection to database
 	@classmethod
